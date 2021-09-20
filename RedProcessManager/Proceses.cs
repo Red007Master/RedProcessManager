@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -198,14 +198,21 @@ class Proceses
         Process[] DiscordProcessesArray;
         while (true)
         {
-            DiscordProcessesArray = Process.GetProcessesByName("Discord");
-
-            foreach (var DiscordProcess in DiscordProcessesArray)
+            try
             {
-                DiscordProcess.PriorityClass = ProcessPriorityClass.High;
-                Thread.Sleep(100);
+                DiscordProcessesArray = Process.GetProcessesByName("Discord");
+
+                foreach (var DiscordProcess in DiscordProcessesArray)
+                {
+                    DiscordProcess.PriorityClass = ProcessPriorityClass.High;
+                    Thread.Sleep(100);
+                }
+                Thread.Sleep(1000);
             }
-            Thread.Sleep(1000);
+            catch (Exception ex)
+            {
+                Other.DebugLog($"DiscordPrioritizer exeption: [{ex}]");
+            }
         }
     }
 
