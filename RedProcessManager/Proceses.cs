@@ -211,7 +211,7 @@ class Proceses
             }
             catch (Exception ex)
             {
-                Other.DebugLog($"DiscordPrioritizer exeption: [{ex}]"); //TEST
+                Other.DebugLog($"DiscordPrioritizer exeption: [{ex}]"); //TEST UPD 2
             }
         }
     }
