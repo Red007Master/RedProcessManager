@@ -12,7 +12,7 @@ namespace RedProcessManager
             {
                 Other.OneTickLogic();
 
-                if (!Publics.Stop)
+                if (!Publics.Settings.Stop)
                     Proceses.ProcesesDetection();
             }
 

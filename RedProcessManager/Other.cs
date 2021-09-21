@@ -25,8 +25,8 @@ class Other
 
         #region WorkSpeed
 
-        Publics.WorkSpeedMainUsing = Publics.WorkSpeedMain;
-        Publics.WorkSpeedSecondUsing = Publics.WorkSpeedSecond;
+        Publics.Floats.WorkSpeedMainUsing = Publics.Settings.WorkSpeedMain;
+        Publics.Floats.WorkSpeedSecondUsing = Publics.Settings.WorkSpeedSecond;
 
         #endregion WorkSpeed
 
@@ -36,7 +36,7 @@ class Other
 
         Log.LogWrite(2);
 
-        if (Publics.Visibility)
+        if (Publics.Settings.Visibility)
         {
             ConsoleVisibility.Show();
         }
@@ -48,32 +48,32 @@ class Other
     {
         #region FilesDir
 
-        Dir.Main = @"C:\RedProcessManager";
+        Publics.Dir.Main = @"C:\RedProcessManager";
 
-        Targets.Path = $@"{Dir.Main}\target.txt";
-        Triggers.Path = $@"{Dir.Main}\trigger.txt";
-        Settings.SettingsFile = $@"{Dir.Main}\settings.txt";
-        Dir.DebugFile = $@"{Dir.Main}\debugLog.txt";
-        Dir.LogFile = $@"{Dir.Main}\log.txt";
-        Dir.UIMenuFile = $@"{Dir.Main}\UI\RedUI.exe";
+        Targets.Path = $@"{Publics.Dir.Main}\target.txt";
+        Triggers.Path = $@"{Publics.Dir.Main}\trigger.txt";
+        Settings.SettingsFile = $@"{Publics.Dir.Main}\settings.txt";
+        Publics.Dir.DebugFile = $@"{Publics.Dir.Main}\debugLog.txt";
+        Publics.Dir.LogFile = $@"{Publics.Dir.Main}\log.txt";
+        Publics.Dir.UIMenuFile = $@"{Publics.Dir.Main}\UI\RedUI.exe";
 
         #endregion FilesDir
         #region FloatFilesDir
 
-        Dir.MenuTrigger = $@"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}\menu";
+        Publics.Dir.MenuTrigger = $@"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}\menu";
 
         #endregion FloatFilesDir
         #region OtherData
 
-        Publics.GlobalCounter = 0;
+        Publics.Floats.GlobalCounter = 0;
 
         #endregion OtherData
     }
     static private void InitializationInstalLogic()
     {
-        if (!Directory.Exists(Dir.Main))
+        if (!Directory.Exists(Publics.Dir.Main))
         {
-            Directory.CreateDirectory(Dir.Main);
+            Directory.CreateDirectory(Publics.Dir.Main);
             File.Create(Targets.Path).Close();
             {
                 Write.WriteInTxt(Targets.Path, @"// In this file write processes that must be turned off following the process rules writed in trigger.txt", true);
@@ -105,29 +105,27 @@ class Other
 
     static public void OneTickLogic()
     {
-        Publics.GlobalCounter++;
+        Publics.Floats.GlobalCounter++;
 
-        if (Publics.WorkState == false)
+        if (Publics.Floats.WorkState == false)
         {
-            if (Publics.GlobalCounter > 50)
+            if (Publics.Floats.GlobalCounter > 5)
             {
-                Other.DebugLog("GlobalCounter iteration 50, GlobalCounter set to 0");
-
                 Read.ReadTriggersAndTargets();
 
                 GC.Collect();
-                Publics.GlobalCounter = 0;
+                Publics.Floats.GlobalCounter = 0;
             }
 
-            if (Directory.Exists(Dir.MenuTrigger))
+            if (Directory.Exists(Publics.Dir.MenuTrigger))
             {
                 DebugLog("Menu call detected");
 
                 ConsoleVisibility.Show();
 
-                Directory.Delete(Dir.MenuTrigger);
+                Directory.Delete(Publics.Dir.MenuTrigger);
 
-                Process.Start(Dir.UIMenuFile);
+                Process.Start(Publics.Dir.UIMenuFile);
 
                 DebugLog("Menu call complete");
             }
@@ -136,21 +134,21 @@ class Other
 
     static public void DebugLog(string inputLogMassage)
     {
-        if (Publics.Debug || inputLogMassage == "Start")
+        if (Publics.Settings.Debug || inputLogMassage == "Start")
         {
             string result = $"[{DateTime.Now}] {inputLogMassage}.";
 
             if (inputLogMassage != "Start")
             {
                 Console.WriteLine(result);
-                Write.WriteInTxt(Dir.DebugFile, result, true);
+                Write.WriteInTxt(Publics.Dir.DebugFile, result, true);
             }
             else
             {
-                Write.WriteInTxt(Dir.DebugFile, "", true);
+                Write.WriteInTxt(Publics.Dir.DebugFile, "", true);
 
                 Console.WriteLine(result);
-                Write.WriteInTxt(Dir.DebugFile, result, true);
+                Write.WriteInTxt(Publics.Dir.DebugFile, result, true);
             }
         }
     }

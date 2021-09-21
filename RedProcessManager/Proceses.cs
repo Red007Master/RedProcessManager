@@ -12,13 +12,13 @@ class Proceses
     {
         Other.DebugLog($"Detected process [{inputTrigger.Name}] initiating boosting");
 
-        Publics.CurrentDetectedTrigger = inputTrigger;
+        Publics.BoostingTemp.CurrentDetectedTrigger = inputTrigger;
         TargetsDown(GetOnlineTargetsListFromTrigger(inputTrigger));
 
-        Publics.BoosterStart = DateTime.Now;
-        Publics.WorkState = true;
-        Publics.WorkSpeedMainUsing = Publics.WorkSpeedMainInBoost;
-        Publics.WorkSpeedSecondUsing = Publics.WorkSpeedSecondInBoost;
+        Publics.BoostingTemp.BoosterStart = DateTime.Now;
+        Publics.Floats.WorkState = true;
+        Publics.Floats.WorkSpeedMainUsing = Publics.Settings.WorkSpeedMainInBoost;
+        Publics.Floats.WorkSpeedSecondUsing = Publics.Settings.WorkSpeedSecondInBoost;
 
         OtherLogicStart();
 
@@ -28,18 +28,18 @@ class Proceses
     }
     static public void SystemBoostStop()
     {
-        Other.DebugLog($"Process [{Publics.CurrentDetectedTrigger.Name}] don't detected, trying to restore system");
+        Other.DebugLog($"Process [{Publics.BoostingTemp.CurrentDetectedTrigger.Name}] don't detected, trying to restore system");
 
-        ProcessesUp(Publics.CurrentStopedTargets);
+        ProcessesUp(Publics.BoostingTemp.CurrentStopedTargets);
 
-        Publics.BoosterStop = DateTime.Now;
+        Publics.BoostingTemp.BoosterStop = DateTime.Now;
         Log.LogWrite(1);
-        Publics.WorkState = false;
-        Publics.WorkSpeedMainUsing = Publics.WorkSpeedMain;
-        Publics.WorkSpeedSecondUsing = Publics.WorkSpeedSecond;
+        Publics.Floats.WorkState = false;
+        Publics.Floats.WorkSpeedMainUsing = Publics.Settings.WorkSpeedMain;
+        Publics.Floats.WorkSpeedSecondUsing = Publics.Settings.WorkSpeedSecond;
         OtherLogicStop();
-        Publics.CurrentStopedTargets = null;
-        Publics.CurrentDetectedTrigger = null;
+        Publics.BoostingTemp.CurrentStopedTargets = null;
+        Publics.BoostingTemp.CurrentDetectedTrigger = null;
 
         GC.Collect();
 
@@ -53,7 +53,7 @@ class Proceses
     static void TargetsDown(List<Target> inputTarget)
     {
         Process[] targetProcess;
-        Publics.CurrentStopedTargets = inputTarget;
+        Publics.BoostingTemp.CurrentStopedTargets = inputTarget;
 
         for (int i = 0; i < inputTarget.Count; i++)
         {
@@ -101,21 +101,21 @@ class Proceses
 
     static public void ProcesesDetection()
     {
-        if (Publics.WorkState)
+        if (Publics.Floats.WorkState)
         {
             ProcesesDetectionAtOn();
         }
-        else if (!Publics.WorkState)
+        else if (!Publics.Floats.WorkState)
         {
             ProcesesDetectionAtOff();
         }
 
-        Thread.Sleep(Publics.WorkSpeedMainUsing);
+        Thread.Sleep(Publics.Floats.WorkSpeedMainUsing);
     }
     static private void ProcesesDetectionAtOn()
     {
-        Process currentRequestAsProcess = Process.GetProcessesByName(Publics.CurrentDetectedTrigger.Name).FirstOrDefault();
-        Thread.Sleep(Publics.WorkSpeedSecondUsing);
+        Process currentRequestAsProcess = Process.GetProcessesByName(Publics.BoostingTemp.CurrentDetectedTrigger.Name).FirstOrDefault();
+        Thread.Sleep(Publics.Floats.WorkSpeedSecondUsing);
         if (currentRequestAsProcess == null)
         {
             SystemBoostStop();
@@ -127,7 +127,7 @@ class Proceses
         {
             Process currentRequestAsProcess = Process.GetProcessesByName(Triggers.List[i].Name).FirstOrDefault();
 
-            Thread.Sleep(Publics.WorkSpeedSecondUsing);
+            Thread.Sleep(Publics.Floats.WorkSpeedSecondUsing);
 
             if (currentRequestAsProcess != null)
             {
@@ -135,7 +135,7 @@ class Proceses
                 break;
             }
 
-            Thread.Sleep(Publics.WorkSpeedSecondUsing);
+            Thread.Sleep(Publics.Floats.WorkSpeedSecondUsing);
         }
     }
 
@@ -169,7 +169,7 @@ class Proceses
     {
         //Console.Beep(500, 200);
 
-        if (Publics.CurrentDetectedTrigger.Name == "RainbowSix")
+        if (Publics.BoostingTemp.CurrentDetectedTrigger.Name == "RainbowSix")
         {
             DiscordPrioritizerThread.Abort();
         }
@@ -178,11 +178,11 @@ class Proceses
     {
         //Console.Beep(500, 200);
 
-        Process currentDetectedTrigger = Process.GetProcessesByName(Publics.CurrentDetectedTrigger.Name).First();
+        Process currentDetectedTrigger = Process.GetProcessesByName(Publics.BoostingTemp.CurrentDetectedTrigger.Name).First();
 
         currentDetectedTrigger.PriorityClass = ProcessPriorityClass.AboveNormal;
 
-        if (Publics.CurrentDetectedTrigger.Name == "RainbowSix")
+        if (Publics.BoostingTemp.CurrentDetectedTrigger.Name == "RainbowSix")
         {
             DiscordPrioritizerThread = new Thread(DiscordPrioritizer);
             DiscordPrioritizerThread.Start();
@@ -211,7 +211,7 @@ class Proceses
             }
             catch (Exception ex)
             {
-                Other.DebugLog($"DiscordPrioritizer exeption: [{ex}]"); //TEST UPD 2
+                Other.DebugLog($"DiscordPrioritizer exeption: [{ex}]");
             }
         }
     }
