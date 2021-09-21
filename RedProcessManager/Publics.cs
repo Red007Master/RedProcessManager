@@ -22,6 +22,7 @@ class Publics
         static public int WorkSpeedSecondUsing { get; set; }
         static public bool WorkState { get; set; }
         static public int GlobalCounter { get; set; }
+        static public DateTime LastFileUpdate { get; set; }
     }
 
     public class BoostingTemp

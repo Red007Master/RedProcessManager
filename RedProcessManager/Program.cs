@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace RedProcessManager
 {
@@ -8,15 +9,26 @@ namespace RedProcessManager
         {
             Other.Initialization();
 
-            while (true)
+            try
             {
-                Other.OneTickLogic();
+                while (true)
+                {
+                    Other.OneTickLogic();
 
-                if (!Publics.Settings.Stop)
-                    Proceses.ProcesesDetection();
+                    if (!Publics.Settings.Stop)
+                        Proceses.ProcesesDetection();
+                }
             }
+            catch (Exception ex)
+            {
+                Other.DebugLog($"!!!MAIN_LOOP_EXCEPTION!!!\nEx=[{ex}]");
 
-            Console.ReadLine();
+                for (int i = 0; i < 5; i++)
+                {
+                    Thread.Sleep(1000);
+                    Console.Beep();
+                }
+            }
         }
     }
 }

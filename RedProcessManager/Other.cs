@@ -42,6 +42,17 @@ class Other
         }
 
         #endregion CoreSettingsApply
+
+        #region FilesUpdateGetLogic
+
+        Publics.Floats.LastFileUpdate = new FileInfo(Targets.Path).LastWriteTime;
+
+        if (new FileInfo(Triggers.Path).LastWriteTime > Publics.Floats.LastFileUpdate)
+        {
+            Publics.Floats.LastFileUpdate = new FileInfo(Triggers.Path).LastWriteTime;
+        }
+
+        #endregion FilesUpdateGetLogic
     }
 
     static private void InitializationGetConstantData()
@@ -111,10 +122,15 @@ class Other
         {
             if (Publics.Floats.GlobalCounter > 5)
             {
-                Read.ReadTriggersAndTargets();
-
                 GC.Collect();
                 Publics.Floats.GlobalCounter = 0;
+            }
+
+            if (new FileInfo(Triggers.Path).LastWriteTime > Publics.Floats.LastFileUpdate || new FileInfo(Targets.Path).LastWriteTime > Publics.Floats.LastFileUpdate)
+            {
+                Other.DebugLog("File update detected");
+                Publics.Floats.LastFileUpdate = DateTime.Now + TimeSpan.FromSeconds(5);
+                Read.ReadTriggersAndTargets();
             }
 
             if (Directory.Exists(Publics.Dir.MenuTrigger))

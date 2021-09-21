@@ -97,31 +97,31 @@ class Settings
                 switch (setting.Name)
                 {
                     case "Stop":
-                        Publics.Stop = Convert.ToBoolean(setting.Value);
+                        Publics.Settings.Stop = Convert.ToBoolean(setting.Value);
                         break;
 
                     case "Visibility":
-                        Publics.Visibility = Convert.ToBoolean(setting.Value);
+                        Publics.Settings.Visibility = Convert.ToBoolean(setting.Value);
                         break;
 
                     case "Debug":
-                        Publics.Debug = Convert.ToBoolean(setting.Value);
+                        Publics.Settings.Debug = Convert.ToBoolean(setting.Value);
                         break;
 
                     case "WorkSpeedMain":
-                        Publics.WorkSpeedMain = Convert.ToInt32(setting.Value);
+                        Publics.Settings.WorkSpeedMain = Convert.ToInt32(setting.Value);
                         break;
 
                     case "WorkSpeedSecond":
-                        Publics.WorkSpeedSecond = Convert.ToInt32(setting.Value);
+                        Publics.Settings.WorkSpeedSecond = Convert.ToInt32(setting.Value);
                         break;
 
                     case "WorkSpeedMainInBoost":
-                        Publics.WorkSpeedMainInBoost = Convert.ToInt32(setting.Value);
+                        Publics.Settings.WorkSpeedMainInBoost = Convert.ToInt32(setting.Value);
                         break;
 
                     case "WorkSpeedSecondInBoost":
-                        Publics.WorkSpeedSecondInBoost = Convert.ToInt32(setting.Value);
+                        Publics.Settings.WorkSpeedSecondInBoost = Convert.ToInt32(setting.Value);
                         break;
                 }
 
