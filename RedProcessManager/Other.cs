@@ -17,8 +17,6 @@ class Other
 
         InitializationGetConstantData();
 
-        DebugLog("Start");
-
         Settings.GetDefaultSettingsList();
 
         InitializationInstalLogic();
@@ -53,6 +51,8 @@ class Other
         }
 
         #endregion FilesUpdateGetLogic
+
+        DebugLog("Start");
     }
 
     static private void InitializationGetConstantData()
@@ -88,12 +88,12 @@ class Other
             File.Create(Targets.Path).Close();
             {
                 Write.WriteInTxt(Targets.Path, @"// In this file write processes that must be turned off following the process rules writed in trigger.txt", true);
-                Write.WriteInTxt(Targets.Path, @"// syntax example '1 | helloWorld | C:\Windows\Programs\helloWorld.exe': '1' is process ID increase it by 1 for every process, 'helloWorld' is name of process in task manager (in details tab), 'C:\Windows\Programs\helloWorld.exe' is path to process file", true);
+                Write.WriteInTxt(Targets.Path, @"// syntax example '1 | helloWorld | C:\Windows\Programs\helloWorld.exe': '1' it is process ID increase it by 1 for every process, 'helloWorld' is name of process in task manager (in details tab), 'C:\Windows\Programs\helloWorld.exe' is path to process file", true);
             }
             File.Create(Triggers.Path).Close();
             {
                 Write.WriteInTxt(Triggers.Path, @"// In this file write processes that must trigger process busting", true);
-                Write.WriteInTxt(Triggers.Path, @"// syntax example '1 | game    | 0,1,2': '1' is process number increase it by 1 for every process, 'game' is name of process in task manager (in details tab), '0,1,2' is ID of processes in target.txt, they be closed after detecting 'game' process", true);
+                Write.WriteInTxt(Triggers.Path, @"// syntax example '1 | game | 0,1,2': '1' is it process number increase it by 1 for every process, 'game' is name of process in task manager (in details tab), '0,1,2' is ID of processes in target.txt, they be closed after detecting 'game' process", true);
             }
         }
         else
@@ -120,7 +120,7 @@ class Other
 
         if (Publics.Floats.WorkState == false)
         {
-            if (Publics.Floats.GlobalCounter > 5)
+            if (Publics.Floats.GlobalCounter > 50)
             {
                 GC.Collect();
                 Publics.Floats.GlobalCounter = 0;
