@@ -59,7 +59,7 @@ class Other
     {
         #region FilesDir
 
-        Publics.Dir.Main = @"C:\RedProcessManager";
+        Publics.Dir.Main = @"D:\Development\RedsSoft\RedProcessManager";
 
         Targets.Path = $@"{Publics.Dir.Main}\target.txt";
         Triggers.Path = $@"{Publics.Dir.Main}\trigger.txt";

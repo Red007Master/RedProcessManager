@@ -172,26 +172,36 @@ class Proceses
         if (Publics.BoostingTemp.CurrentDetectedTrigger.Name == "RainbowSix")
         {
             DiscordPrioritizerThread.Abort();
+            TargetProcessPrioritizerThread.Abort();
         }
     }
     static void OtherLogicStart()
     {
         //Console.Beep(500, 200);
 
-        Process currentDetectedTrigger = Process.GetProcessesByName(Publics.BoostingTemp.CurrentDetectedTrigger.Name).First();
-
-        currentDetectedTrigger.PriorityClass = ProcessPriorityClass.AboveNormal;
-
-        if (Publics.BoostingTemp.CurrentDetectedTrigger.Name == "RainbowSix")
+        try
         {
-            DiscordPrioritizerThread = new Thread(DiscordPrioritizer);
-            DiscordPrioritizerThread.Start();
+            Process currentDetectedTrigger = Process.GetProcessesByName(Publics.BoostingTemp.CurrentDetectedTrigger.Name).First();
+
+            currentDetectedTrigger.PriorityClass = ProcessPriorityClass.AboveNormal;
+
+            if (Publics.BoostingTemp.CurrentDetectedTrigger.Name == "RainbowSix")
+            {
+                DiscordPrioritizerThread = new Thread(DiscordPrioritizer);
+                DiscordPrioritizerThread.Start();
+
+                TargetProcessPrioritizerThread = new Thread(new ParameterizedThreadStart(TargetProcessPrioritizer));
+                TargetProcessPrioritizerThread.Start(currentDetectedTrigger);
+            }
+        }
+        catch (Exception)
+        {
         }
     }
 
     #endregion OtherLogic
 
-    #region Discord
+    #region Threds
 
     static void DiscordPrioritizer()
     {
@@ -216,7 +226,27 @@ class Proceses
         }
     }
 
+    static void TargetProcessPrioritizer(object iTargetProcess)
+    {
+        Process targetProcess = (Process)iTargetProcess;
+
+        while (true)
+        {
+            try
+            {
+                targetProcess.PriorityClass = ProcessPriorityClass.AboveNormal;
+
+                Thread.Sleep(10000);
+            }
+            catch (Exception ex)
+            {
+                Other.DebugLog($"DiscordPrioritizer exeption: [{ex}]");
+            }
+        }
+    }
+
     static Thread DiscordPrioritizerThread { get; set; }
+    static Thread TargetProcessPrioritizerThread { get; set; }
 
     #endregion
 }

@@ -1,4 +1,4 @@
-# Basic PC (Windows) process monitoring and ability to create boosting scenarios (if process X detected kill processes A, B, C and set Xes priority, etc.)
+# Basic PC (Windows) process monitoring and creating ability to create boosting scenarios (if process X detected kill processes A, B, C and set Xes priority, etc.)
 
 In one word: it's like Razer Cortex and similar software, but console and give more performance that consume, average consumption 15mb ram and 0.1% of 4-4 core 3.8 GHz processor.
 

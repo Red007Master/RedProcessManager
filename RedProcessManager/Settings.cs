@@ -57,7 +57,7 @@ class Settings
             File.Delete(SettingsFile);
         }
         catch (Exception)
-        {}
+        { }
 
         for (int i = 0; i < SettingsList.Count; i++)
         {
